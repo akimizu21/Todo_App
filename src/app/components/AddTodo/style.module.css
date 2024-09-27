@@ -1,0 +1,11 @@
+/* ADD TODO 領域 */
+
+.inputArea {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.inputButton {
+  width: 64px;
+}
