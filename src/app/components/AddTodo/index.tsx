@@ -2,6 +2,9 @@
  * AddTodo
  */
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
+
 /**
  * components
  */
@@ -22,11 +25,8 @@ export const AddTodo = (props: any) => {
           placeholder={'New Todo'}
           inputValue={addInputTodo}
           handleChangeValue={onChangeAddInputTodo}
-          className={styles.from}
         />
-        <button onClick={handleAddTodo} className={styles.inputButton}>
-          追加
-        </button>
+        <button onClick={handleAddTodo} className={styles.inputButton}>追加</button>
       </div>
     </>
   );

@@ -35,7 +35,7 @@ const Home = () => {
         />
       </section>
 
-      {/* Todo検索フォーム 領域*/}
+      {/* Todo検索フォーム 領域 */}
       <section className={styles.commonArea}>
         <InputForm
           placeholder={'Search keyword'}
