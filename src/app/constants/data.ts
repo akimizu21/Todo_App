@@ -14,12 +14,12 @@ interface INIT_TODO_LIST {
 export const INIT_TODO_LIST: INIT_TODO_LIST[] = [
   {
     id: 1,
-    title: "todo1",
+    title: 'todo1',
     isDone: false,
   },
   {
     id: 2,
-    title: "todo2",
+    title: 'todo2',
     isDone: false,
   },
 ];

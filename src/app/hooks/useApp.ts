@@ -2,41 +2,46 @@
  * useApp
  */
 
-import React from "react";
+import React from 'react';
 /**
  * components
  */
-import { INIT_TODO_LIST, INIT_TODO_ID } from "../constants/data";
+import { INIT_TODO_LIST, INIT_TODO_ID } from '../constants/data';
+import { useParams } from 'next/navigation';
 
 /**
- * 
- * @returns 
+ *
+ * @returns
  */
 export const useApp = () => {
-  // addInputTodo
-  const [addInputTodo, setAddInputTodo] = React.useState("");
-  // todoList
+  /* addInputTodo */
+  const [addInputTodo, setAddInputTodo] = React.useState('');
+  /* todoList */
   const [todoList, setTodoList] = React.useState(INIT_TODO_LIST);
-  // 採番用ID
+  /* 採番用ID */
   const [uniquId, setUniquId] = React.useState(INIT_TODO_ID);
-  // selectTab
-  const [selectTab, setSelectTab] = React.useState("未完了");
-  
+  /* selectTab */
+  const [selectTab, setSelectTab] = React.useState('未完了');
+  /* 検索キーワード */
+  const [searchKeyword, setSearchKeyword] = React.useState('');
+  /* show todo list */
+  const [showTodoList, setShowTodoList] = React.useState(INIT_TODO_LIST);
+
   /**
    * TodoList取得処理
    */
   // const getData = async () => {
   //   try {
   //     const response = await axios.get("/api/todo")
-  //     setTodoList(response.data); 
+  //     setTodoList(response.data);
   //   } catch (error) {
   //     console.error("Error fetching todo data:", error);
   //   }
   // };
-  
+
   /**
    * addInputTodo更新処理
-   * @param e 
+   * @param e
    */
   const onChangeAddInputTodo = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAddInputTodo(e.target.value);
@@ -47,68 +52,121 @@ export const useApp = () => {
    */
   const handleAddTodo = () => {
     // addInputTodoが空じゃないとき
-    if ( addInputTodo !== "" ) {
-      const nestUniquId = uniquId + 1;
-      const newTodoList = [...todoList, {
-        id:  nestUniquId,
-        title: addInputTodo,
-        isDone: false,
-      }]
+    if (addInputTodo !== '') {
+      const nextUniquId = uniquId + 1;
+
+      const newTodoList = [
+        ...todoList,
+        {
+          id: nextUniquId,
+          title: addInputTodo,
+          isDone: false,
+        },
+      ];
+
+      // オリジナルのTodoListを更新
       setTodoList(newTodoList);
+
+      // 検索用TodoListを更新
+      updateShowTodoList(newTodoList, searchKeyword);
       // IDをインクリメント
-      setUniquId(nestUniquId);      
+      setUniquId(nextUniquId);
       // addINputTodoをリセット
-      setAddInputTodo("");
-    };
+      setAddInputTodo('');
+    }
   };
 
   /**
    * Todo削除処理
-   * @param targetId 
-   * @param targetTitle 
+   * @param targetId
+   * @param targetTitle
    */
-  const handleDeleteTodo = (targetId: number, targetTitle:string) => {
-    if(window.confirm(`${targetTitle}を削除しますか?`)) {
+  const handleDeleteTodo = (targetId: number, targetTitle: string) => {
+    if (window.confirm(`${targetTitle}を削除しますか?`)) {
       const newTodoList = todoList.filter((todo: any) => {
         return todo.id !== targetId;
       });
       setTodoList(newTodoList);
+
+      // 表示用TodoListを更新
+      updateShowTodoList(newTodoList, searchKeyword);
     }
   };
 
   /**
    * Todo完了処理
-   * @param targetId 
+   * @param targetId
    */
-  const handleCheckTodo = (targetId: number, targetTitle:string) => {
-    if(window.confirm(`${targetTitle}を完了しましたか?`)) {
+  const handleCheckTodo = (targetId: number, targetTitle: string) => {
+    if (window.confirm(`${targetTitle}を完了しましたか?`)) {
       const doneTodoList = todoList.map((todo: any) => {
         if (todo.id === targetId) {
-          return {...todo, isDone: !todo.isDone};
+          return { ...todo, isDone: !todo.isDone };
         }
-        return todo
+        return todo;
       });
       // 更新されたTodoListをセット
       setTodoList(doneTodoList);
-    };
+
+      // 表示用TodoListを更新
+      updateShowTodoList(doneTodoList, searchKeyword);
+    }
+  };
+
+  /**
+   * SearchTodo更新処理
+   * @param e
+   */
+  const handelSearchTodo = (e: any) => {
+    const keyword = e.target.value;
+    setSearchKeyword(keyword);
+
+    updateShowTodoList(todoList, keyword);
+  };
+
+  /**
+   * Todo検索処理
+   * @param keyword
+   * @returns
+   */
+  const searchTodo = (targetTodoList: any, keyword: string) => {
+    // 検索処理
+    const newTodoList = targetTodoList.filter((todo: any) => {
+      const regexp = new RegExp('^' + keyword, 'i');
+      return todo.title.match(regexp);
+    });
+    // 検索条件にマッチしたTodoだけを返す
+    return newTodoList;
+  };
+
+  const updateShowTodoList = (newTodoList: any, keyword: string) => {
+    if (keyword !== '') {
+      // 検索キーワードがある場合は、検索処理を実施して更新する
+      setShowTodoList(searchTodo(newTodoList, keyword));
+    } else {
+      // 検索キーワードがない場合は、元のTodoList
+      setShowTodoList(newTodoList);
+    }
   };
 
   // React.useEffect(() => {
   //   getData();
   // }, []);
 
-  return[
+  return [
     {
       addInputTodo,
       selectTab,
-      todoList,
+      showTodoList,
+      searchKeyword,
     },
     {
       onChangeAddInputTodo,
       handleAddTodo,
       setSelectTab,
       handleCheckTodo,
-      handleDeleteTodo
-    }
-  ]
-}
+      handleDeleteTodo,
+      handelSearchTodo,
+    },
+  ];
+};
