@@ -39,7 +39,7 @@ const Home = () => {
       <section className={styles.commonArea}>
         <InputForm
           placeholder={'Search keyword'}
-          value={state.searchKeyword}
+          inputValue={state.searchKeyword}
           handleChangeValue={actions.handelSearchTodo}
         />
       </section>

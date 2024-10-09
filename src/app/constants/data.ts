@@ -3,15 +3,15 @@
  */
 
 /**
- * Todo初期値
+ * TodoListの型定義
  */
-interface INIT_TODO_LIST {
+export interface Todo {
   id: number;
   title: string;
   isDone: boolean;
 }
 
-export const INIT_TODO_LIST: INIT_TODO_LIST[] = [
+export const INIT_TODO_LIST: Todo[] = [
   {
     id: 1,
     title: 'todo1',

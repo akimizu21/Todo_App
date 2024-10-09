@@ -8,11 +8,22 @@ import {
   faCircleXmark,
 } from '@fortawesome/free-solid-svg-icons';
 /**
+ * components
+ */
+import { Todo } from '@/app/constants/data';
+/**
  * styles
  */
 import styles from './style.module.css';
 
-export const TodoList = (props: any) => {
+interface Props {
+  selectTab: string;
+  todoList: Todo[];
+  handleCheckTodo: (id: number, title: string) => void;
+  handleDeleteTodo: (id: number, title: string) => void;
+}
+
+export const TodoList = (props: Props) => {
   const { selectTab, todoList, handleCheckTodo, handleDeleteTodo } = props;
   return (
     <>

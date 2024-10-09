@@ -6,26 +6,42 @@ import React from 'react';
 /**
  * components
  */
-import { INIT_TODO_LIST, INIT_TODO_ID } from '../constants/data';
+import { Todo, INIT_TODO_LIST, INIT_TODO_ID } from '../constants/data';
 import { useParams } from 'next/navigation';
+
+interface State {
+  addInputTodo: string;
+  selectTab: string;
+  showTodoList: Todo[];
+  searchKeyword: string;
+}
+
+interface Actions {
+  onChangeAddInputTodo: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleAddTodo: () => void;
+  setSelectTab: (tab: string) => void;
+  handleCheckTodo: (id: number, title: string) => void;
+  handleDeleteTodo: (id: number, title: string) => void;
+  handelSearchTodo: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
 
 /**
  *
  * @returns
  */
-export const useApp = () => {
+export const useApp = (): [State, Actions]=> {
   /* addInputTodo */
-  const [addInputTodo, setAddInputTodo] = React.useState('');
+  const [addInputTodo, setAddInputTodo] = React.useState<string>('');
   /* todoList */
-  const [todoList, setTodoList] = React.useState(INIT_TODO_LIST);
+  const [todoList, setTodoList] = React.useState<Todo[]>(INIT_TODO_LIST);
   /* 採番用ID */
-  const [uniquId, setUniquId] = React.useState(INIT_TODO_ID);
+  const [uniquId, setUniquId] = React.useState<number>(INIT_TODO_ID);
   /* selectTab */
-  const [selectTab, setSelectTab] = React.useState('未完了');
+  const [selectTab, setSelectTab] = React.useState<string>('未完了');
   /* 検索キーワード */
-  const [searchKeyword, setSearchKeyword] = React.useState('');
+  const [searchKeyword, setSearchKeyword] = React.useState<string>('');
   /* show todo list */
-  const [showTodoList, setShowTodoList] = React.useState(INIT_TODO_LIST);
+  const [showTodoList, setShowTodoList] = React.useState<Todo[]>(INIT_TODO_LIST);
 
   /**
    * TodoList取得処理
@@ -117,7 +133,7 @@ export const useApp = () => {
    * SearchTodo更新処理
    * @param e
    */
-  const handelSearchTodo = (e: any) => {
+  const handelSearchTodo = (e: React.ChangeEvent<HTMLInputElement>) => {
     const keyword = e.target.value;
     setSearchKeyword(keyword);
 
@@ -129,9 +145,9 @@ export const useApp = () => {
    * @param keyword
    * @returns
    */
-  const searchTodo = (targetTodoList: any, keyword: string) => {
+  const searchTodo = (targetTodoList: Todo[], keyword: string) => {
     // 検索処理
-    const newTodoList = targetTodoList.filter((todo: any) => {
+    const newTodoList = targetTodoList.filter((todo: Todo) => {
       const regexp = new RegExp('^' + keyword, 'i');
       return todo.title.match(regexp);
     });
@@ -139,7 +155,7 @@ export const useApp = () => {
     return newTodoList;
   };
 
-  const updateShowTodoList = (newTodoList: any, keyword: string) => {
+  const updateShowTodoList = (newTodoList: Todo[], keyword: string) => {
     if (keyword !== '') {
       // 検索キーワードがある場合は、検索処理を実施して更新する
       setShowTodoList(searchTodo(newTodoList, keyword));

@@ -6,7 +6,12 @@
  */
 import styles from './style.module.css';
 
-export const SelectTodo = (props: any) => {
+interface Props {
+  setSelectTab: (tab: string) => void;
+  selectTab: string;
+}
+
+export const SelectTodo = (props: Props) => {
   const { setSelectTab, selectTab } = props;
   return (
     <>

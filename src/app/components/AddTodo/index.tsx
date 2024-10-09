@@ -1,21 +1,24 @@
 /**
  * AddTodo
  */
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
-
 /**
  * components
  */
 import { InputForm } from '../Common/InputForm';
+import { ButtonForm } from '../Common/ButtonForm';
 
 /**
  * styles
  */
 import styles from './style.module.css';
 
-export const AddTodo = (props: any) => {
+interface Props {
+  addInputTodo: string;
+  onChangeAddInputTodo: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleAddTodo: () => void;
+}
+
+export const AddTodo = (props: Props) => {
   const { addInputTodo, onChangeAddInputTodo, handleAddTodo } = props;
   return (
     <>
@@ -26,7 +29,9 @@ export const AddTodo = (props: any) => {
           inputValue={addInputTodo}
           handleChangeValue={onChangeAddInputTodo}
         />
-        <button onClick={handleAddTodo} className={styles.inputButton}>追加</button>
+        <ButtonForm onClick={handleAddTodo}>
+          追加
+        </ButtonForm>
       </div>
     </>
   );

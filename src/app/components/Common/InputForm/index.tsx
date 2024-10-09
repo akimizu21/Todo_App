@@ -7,7 +7,13 @@ import React from 'react';
  */
 import styles from './style.module.css';
 
-export const InputForm = (props: any) => {
+interface Props {
+  placeholder: string;
+  inputValue: string;
+  handleChangeValue: (e: React.ChangeEvent<HTMLInputElement>) => void;
+};
+
+export const InputForm = (props: Props) => {
   const { inputValue, placeholder, handleChangeValue } = props;
   return (
     <input
